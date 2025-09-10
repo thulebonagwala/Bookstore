@@ -1,25 +1,30 @@
-import { Provider } from 'react-redux';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { store } from './app/store';
+import { Routes, Route } from "react-router-dom";
 import Home from './pages/Home';
-import Cart from './pages/Cart';
+import CartPage from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Layout from './layouts/Layout';
+import BookDetail from './pages/BookDetail';
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
 
-
-
-
-const router = createBrowserRouter([
-  { path: '/', element: <Home /> },
-  { path: '/cart', element: <Cart /> },
-  { path: '/checkout', element: <Checkout /> },
-]);
 
 function App() {
 
   return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/book/:id" element={<BookDetail />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Layout>
 
   )
 }

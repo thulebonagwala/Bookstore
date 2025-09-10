@@ -1,20 +1,29 @@
-import { useDispatch } from 'react-redux';
-import { addItem } from '../features/cart/cartSlice';
+import { Link } from "react-router-dom";
+import type { Book } from "../types";
+import { useCart } from "../context/CartContext";
 
-type Props = { book: any };
-export default function BookCard({ book }: Props) {
-  const dispatch = useDispatch();
+export default function BookCard({ book }: { book: Book }) {
+  const { add } = useCart();
   return (
-    <div className="border rounded p-4 flex flex-col gap-2">
-      <img src={book.coverUrl} alt={book.title} className="h-40 object-cover" />
-      <div className="font-semibold">{book.title}</div>
-      <div className="text-sm text-gray-600">{book.author}</div>
-      <div>${book.price.toFixed(2)}</div>
-      <button
-        onClick={() => dispatch(addItem({ bookId: book._id, title: book.title, price: book.price, quantity: 1 }))}
-        className="bg-black text-white py-2 rounded">
-        Add to Cart
-      </button>
+    <div className="bg-white rounded-lg overflow-hidden shadow-soft hover:shadow-lg transition-shadow">
+      <Link to={`/book/${book._id}`}>
+        <img src={book.coverUrl} alt={book.title} className="w-full h-44 object-cover" />
+      </Link>
+      <div className="p-4">
+        <Link to={`/book/${book._id}`} className="block">
+          <h3 className="font-semibold text-gray-800">{book.title}</h3>
+          <p className="text-sm text-gray-500 mt-1">{book.author}</p>
+        </Link>
+        <div className="mt-3 flex items-center justify-between">
+          <div className="text-lg font-semibold">R{book.price.toFixed(2)}</div>
+          <button
+            onClick={() => add(book, 1)}
+            className="px-3 py-1 rounded bg-purple-600 text-white text-sm hover:bg-purple-700"
+          >
+            Add
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

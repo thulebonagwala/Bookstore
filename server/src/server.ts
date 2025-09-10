@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import authRoutes from './routes/auth.routes';
 import dotenv from "dotenv";
 import {connectDB} from "./config/db"
 
@@ -15,7 +16,10 @@ app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(morgan('dev'));
 
+
 app.get('/health', (_, res) => res.json({ ok: true }));
+
+app.use('/api/v1/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>console.log(`Server running on ${PORT}`));

@@ -1,24 +1,32 @@
-import { Link } from "react-router-dom";
-import type { Book } from "../types";
-import { useCart } from "../context/CartContext";
+import type { Book } from '../types';
 
-export default function BookCard({ book }: { book: Book }) {
-  const { add } = useCart();
+interface BookCardProps {
+  book: Book;
+  onAddToCart: (bookId: string) => void;
+}
+
+export default function BookCard({ book, onAddToCart }: BookCardProps) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-soft hover:shadow-lg transition-shadow">
-      <Link to={`/book/${book._id}`}>
-        <img src={book.coverUrl} alt={book.title} className="w-full h-44 object-cover" />
-      </Link>
+    <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+      <div className="aspect-[3/4] overflow-hidden bg-gray-100">
+        <img
+          src={book.coverUrl}
+          alt={book.title}
+          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+        />
+      </div>
       <div className="p-4">
-        <Link to={`/book/${book._id}`} className="block">
-          <h3 className="font-semibold text-gray-800">{book.title}</h3>
-          <p className="text-sm text-gray-500 mt-1">{book.author}</p>
-        </Link>
-        <div className="mt-3 flex items-center justify-between">
-          <div className="text-lg font-semibold">R{book.price.toFixed(2)}</div>
+        <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 min-h-[3rem]">
+          {book.title}
+        </h3>
+        <p className="text-sm text-gray-600 mb-3">{book.author}</p>
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold text-gray-900">
+            R{book.price.toFixed(2)}
+          </span>
           <button
-            onClick={() => add(book, 1)}
-            className="px-3 py-1 rounded bg-purple-600 text-white text-sm hover:bg-purple-700"
+            onClick={() => onAddToCart(book._id)}
+            className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-md transition-shadow text-sm font-medium"
           >
             Add
           </button>

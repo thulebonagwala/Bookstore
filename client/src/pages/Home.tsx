@@ -21,6 +21,13 @@ export default function Home() {
         })();
     }, [q]);
 
+    const handleAddToCart = async (bookId: string) => {
+    // const success = await cartService.addToCart(bookId);
+    // if (success) {
+    //   await loadCart();
+    // }
+  };
+
     return (
         <>
             <section className="mb-8">
@@ -42,22 +49,35 @@ export default function Home() {
             </section>
 
             <section>
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">Featured</h3>
-                    <Link to="/cart" className="text-sm text-purple-600">View cart</Link>
-                </div>
+                <main className="flex-1">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                        <div className="flex items-center justify-between mb-8">
+                            <h2 className="text-3xl font-bold text-gray-900">Featured</h2>
+                            <a
+                                href="#"
+                                className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
+                            >
+                                View cart
+                            </a>
+                        </div>
 
-                {loading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {Array.from({ length: 4 }).map((_, i) => (
-                            <div key={i} className="animate-pulse bg-white h-56 rounded-lg" />
-                        ))}
+                        {books.length === 0 ? (
+                            <div className="text-center py-12">
+                                <p className="text-gray-500 text-lg">No books found</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                                {books.map((book) => (
+                                    <BookCard
+                                        key={book._id}
+                                        book={book}
+                                        onAddToCart={handleAddToCart}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {books.map((b) => <BookCard key={b._id} book={b} />)}
-                    </div>
-                )}
+                </main>
             </section>
         </>
     );

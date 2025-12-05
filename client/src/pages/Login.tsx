@@ -1,54 +1,33 @@
-import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Login } from '../components/Signin';
+//import { useAuth } from '../context/AuthContext';
 
-export default function Login() {
-  const { login } = useAuth();
+export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [err, setErr] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  //const { signIn } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErr(null);
-    setLoading(true);
-    try {
-      await login(email, password);
-      navigate("/");
-    } catch (e: any) {
-      setErr(e.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
+  const handleLogin = async (email: string, password: string) => {
+    setError(null);
+    //const { error: signInError } = await signIn(email, password);
+
+    // if (signInError) {
+    //   setError(signInError);
+    // } else {
+    //   navigate('/');
+    // }
+  };
+
+  const handleSwitchToSignUp = () => {
+    navigate('/signup');
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="bg-white rounded-lg p-6 shadow-soft">
-        <h2 className="text-xl font-semibold mb-4">Sign in</h2>
-        <form onSubmit={submit} className="space-y-4">
-          <div>
-            <label className="text-sm">Email</label>
-            <input required value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="w-full border rounded px-3 py-2" />
-          </div>
-          <div>
-            <label className="text-sm">Password</label>
-            <input required value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="w-full border rounded px-3 py-2" />
-          </div>
-          {err && <div className="text-sm text-red-600">{err}</div>}
-          <div>
-            <button type="submit" disabled={loading} className="w-full bg-purple-600 text-white px-4 py-2 rounded">
-              {loading ? "Signing in…" : "Sign in"}
-            </button>
-          </div>
-        </form>
-
-        <div className="mt-4 text-sm text-gray-600">
-          New here? <Link to="/register" className="text-purple-600">Create account</Link>
-        </div>
-      </div>
-    </div>
+    <Login
+      onLogin={handleLogin}
+      onSwitchToSignUp={handleSwitchToSignUp}
+      error={error}
+    />
   );
 }
